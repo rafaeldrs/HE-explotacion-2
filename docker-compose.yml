@@ -1,0 +1,32 @@
+version: "3.2"
+services:
+  nodejs:
+    build: 
+      context: .
+    image: he-explotacion-2-image
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=he-explotacion-2-nodejs
+      - MYSQL_USER=miuser
+      - MYSQL_PASS=mipass
+      - MYSQL_DB=mi_db
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "30001:8080"
+    container_name: he-explotacion-2-nodejs
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=miuser
+      - MYSQL_PASSWORD=mipass 
+      - MYSQL_DATABASE=mi_db
+    container_name: he-explotacion-2-mysql
+networks:
+  frontend:
+  backend:
