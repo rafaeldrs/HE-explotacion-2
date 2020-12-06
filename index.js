@@ -34,7 +34,7 @@ initializeDatabase(connection).then(() => {
 
    app.get('/', async function(req,res){
       if (!req.query || !req.query.name) {
-         res.redirect('?name=John');
+         res.redirect('?name=anonymous');
       } else {
          let responseStr = 'Name      |      Surname      |      Password <br>';
 
@@ -50,7 +50,12 @@ initializeDatabase(connection).then(() => {
                   '      |      ' + logged_user[0][i].password + '<br>';
                }
             } 
+
+            responseStr += '<br><br><br><br><br><br><br><br><br><br><br><br>';
             
+            responseStr += 'Este puerto se corresponde con la segunda banera.' 
+               + '<br>Es más avanzado y complejo que el anterior, así que captura primero la anterior.';
+
             res.status(200).send(responseStr);
          } catch(err) {
             console.error(err);
@@ -74,6 +79,9 @@ async function initializeDatabase(connection) {
    const createTable = "CREATE TABLE users (name VARCHAR(255), surname VARCHAR(255), password VARCHAR(255), email VARCHAR(255))";
    await connection.query(createTable);
    
+   const insert0 = "INSERT INTO users VALUES ('Anonymous', 'Nothing', '012345', 'johndoe@rafaeldrs.com')";
+   await connection.query(insert0);
+
    const insert1 = "INSERT INTO users VALUES ('John', 'Doe', '123456', 'johndoe@rafaeldrs.com')";
    await connection.query(insert1);
    
