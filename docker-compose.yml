@@ -8,7 +8,7 @@ services:
       - frontend
       - backend
     environment:
-      - MYSQL_HOST=he-explotacion-2-nodejs
+      - MYSQL_HOST=he-explotacion-2-mysql
       - MYSQL_USER=miuser
       - MYSQL_PASS=mipass
       - MYSQL_DB=mi_db

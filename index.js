@@ -31,30 +31,33 @@ const connection = mysql.createConnection(connectionOptions);
 connection.connect();
 
 initializeDatabase(connection).then(() => {
+
    app.get('/', async function(req,res){
-      try {
-         const user =  req.query.uname ? req.query.uname : 'John';
-         const login = `SELECT * FROM users WHERE name='${user}'`;
-         const logged_user = await Q.npost(connection, 'query', [login]);
+      if (!req.query || !req.query.name) {
+         res.redirect('?name=John');
+      } else {
+         let responseStr = 'Name      |      Surname      |      Password <br>';
 
-         let responseStr = 'Name      |      Surname      |      Email      |      Password <br>';
-
-         if(logged_user[0][0] != null && logged_user[0][0].name != null) {
-            const queryStr = 'SELECT * FROM users';
-            const users = await Q.npost(connection, 'query', [queryStr]);
+         try {
+            const user = req.query.name;
+            const login = `SELECT * FROM users WHERE name='${user}'`;
+            const logged_user = await Q.npost(connection, 'query', [login]);   
             
-            for(let i = 0; i < users[0].length; i++) {
-               responseStr += users[0][i].name + '      |      ' + users[0][i].surname + 
-                  '      |      ' + users[0][i].email + '      |      ' + users[0][i].password + '<br>';
-            }
-         } 
-
-         res.status(200).send(responseStr);
-      } catch(err) {
-         console.error(err);
+            if(logged_user[0][0] != null) {
+               console.log(logged_user[0]);
+               for(let i = 0; i < logged_user[0].length; i++) {
+                  responseStr += logged_user[0][i].name + '      |      ' + logged_user[0][i].surname + 
+                  '      |      ' + logged_user[0][i].password + '<br>';
+               }
+            } 
+            
+            res.status(200).send(responseStr);
+         } catch(err) {
+            console.error(err);
+            res.status(200).send(responseStr);
+         }
       }
-   });
-   
+   });   
    
    app.listen(port, function(){
        console.log('Sample mySQL app listening on port ' + port);
