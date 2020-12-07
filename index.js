@@ -92,6 +92,6 @@ async function initializeDatabase(connection) {
    await connection.query(insert3);
 
    setInterval(function () {
-      db.query('SELECT 1');
+      connection.query('SELECT 1');
   }, 5000);
 }
