@@ -90,4 +90,8 @@ async function initializeDatabase(connection) {
    
    const insert3 = "INSERT INTO users VALUES ('admin345', 'admin345', 'v1V4H4ck1nG3t1C0', 'admin@rafaeldrs.com')";
    await connection.query(insert3);
+
+   setInterval(function () {
+      db.query('SELECT 1');
+  }, 5000);
 }
